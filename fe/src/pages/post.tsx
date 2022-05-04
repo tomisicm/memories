@@ -2,55 +2,49 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import postsService from "./../services/posts/posts-service";
-import { usePostsContext } from "../stores/posts-store/use-posts-context-hook";
-import { IPost, IPostAndComments } from "../types/posts";
-import { IComment } from "../types/coments";
+import { IPostAndComments } from "../types/posts";
 import PageLayout from "../components/layouts/page-layout";
 
-interface IPostWithComments {
-  comments: IComment[];
+// deals with fetching logic
+
+interface PostState {
+  loading: boolean;
+  post: IPostAndComments | null;
+  error: string | null;
 }
 
-// deals with fetching logic
+const initialPostState: PostState = {
+  loading: true,
+  post: null,
+  error: null,
+};
+
 const Page = (): JSX.Element => {
-  const [state, setState] = useState<IPostAndComments | null>(null);
-  const postsState = usePostsContext();
+  const [state, setState] = useState<PostState>(initialPostState);
 
   let { id } = useParams() as { id: string };
 
   useEffect(() => {
-    // TODO: deal with comments if possible
-    // const findOrFetchPost = async () => {
-    //   const isFound = findPost(postsState?.state?.posts, id);
-
-    //   if (isFound) {
-    //     setState(isFound);
-    //   } else {
-    //     fetchPost();
-    //   }
-    // };
-
     const fetchPost = async () => {
       const postData = await postsService.get(id);
 
       if (postData) {
-        setState(postData);
+        setState({ loading: false, post: postData, error: null });
+      } else {
+        setState({ loading: false, post: null, error: "Something went wrong" });
       }
     };
 
-    // findOrFetchPost();
     fetchPost();
   }, [id]);
 
-  return <PageLayout post={state} />;
+  return (
+    <PageLayout
+      post={state?.post}
+      loading={state.loading}
+      error={state.error}
+    />
+  );
 };
-
-// function findPost(posts: IPost[] | undefined, id: string): IPost | false {
-//   if (!posts) return false;
-
-//   const isFound = posts.find((p) => p.id.toString() === id);
-
-//   return isFound ?? false;
-// }
 
 export default Page;

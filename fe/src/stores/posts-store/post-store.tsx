@@ -12,6 +12,7 @@ import postsService from "../../services/posts/posts-service";
 
 interface IPostsContext {
   state: any;
+  fetchDataFeed: () => {};
 }
 
 const PostStore = createContext<IPostsContext | null>(null);
@@ -21,19 +22,31 @@ const PostsContextProvider = ({
 }: PropsWithChildren<Record<string, unknown>>): ReactElement => {
   const [state, dispatch] = useReducer(postsReducer, initialPostsState);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const postData = await postsService.getAll();
+  const fetchDataFeed = async () => {
+    const postData = await postsService.getAll();
 
-      if (postData) {
-        setPostsAction(postData, dispatch);
-      }
-    };
+    if (postData) {
+      setPostsAction(postData, dispatch);
+    }
+  };
 
-    fetchPosts();
-  }, []);
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     const postData = await postsService.getAll();
 
-  return <PostStore.Provider value={{ state }}>{children}</PostStore.Provider>;
+  //     if (postData) {
+  //       setPostsAction(postData, dispatch);
+  //     }
+  //   };
+
+  //   fetchPosts();
+  // }, []);
+
+  return (
+    <PostStore.Provider value={{ state, fetchDataFeed }}>
+      {children}
+    </PostStore.Provider>
+  );
 };
 
 export { PostStore, PostsContextProvider };

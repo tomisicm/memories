@@ -1,22 +1,17 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
+import { PostsContextProvider } from "./stores/posts-store/post-store";
+import { UserContextProvider } from "./stores/user-store/user-store";
 import Posts from "./pages/posts";
 import Post from "./pages/post";
-import { PostsContextProvider } from "./stores/posts-store/post-store";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Nav from "./components/navigation";
 import { HOME_PAGE } from "./constants";
 
-// https://github.com/reach/router/issues/141
-// TODO: not found page
-
-const Nav = () => {
-  return (
-    <>
-      <nav className="mx-4 my-4">
-        <Link to="/">Home</Link> <Link to="profile">Profile</Link>{" "}
-      </nav>
-    </>
-  );
+const NoMatch = () => {
+  return <div>no matching route found</div>;
 };
 
 const Root = ({ children }: any) => (
@@ -30,16 +25,22 @@ const Root = ({ children }: any) => (
 class App extends React.Component {
   render() {
     return (
-      <PostsContextProvider>
-        <div className="container mx-auto">
-          <Root>
-            <Routes>
-              <Route path="/" element={<Posts />} />
-              <Route path="/posts/:id" element={<Post />} />
-            </Routes>
-          </Root>
-        </div>
-      </PostsContextProvider>
+      <UserContextProvider>
+        <PostsContextProvider>
+          <div className="container mx-auto">
+            <Root>
+              <Routes>
+                <Route path="/signin" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/home" element={<Posts />} />
+                <Route path="/posts/:id" element={<Post />} />
+
+                <Route path="*" element={<NoMatch />} />
+              </Routes>
+            </Root>
+          </div>
+        </PostsContextProvider>
+      </UserContextProvider>
     );
   }
 }

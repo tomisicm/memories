@@ -1,13 +1,20 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { MEMORIES_PAGE } from "../constants";
 import { usePostsContext } from "../stores/posts-store/use-posts-context-hook";
+import { useUserStore } from "../stores/user-store/user-store";
 import { IPost } from "../types/posts";
 
 const Page = (): JSX.Element => {
   const postsState = usePostsContext();
   const posts: IPost[] = postsState?.state?.posts;
   const privatePosts: IPost[] = []; // TODO: filter
+  const userDetails = useUserStore();
+
+  useEffect(() => {
+    postsState?.fetchDataFeed();
+  }, [userDetails.state.loggedIn]);
 
   const renderPosts = (posts: IPost[]): JSX.Element[] | JSX.Element | null => {
     if (!posts?.length) {
@@ -29,8 +36,8 @@ const Page = (): JSX.Element => {
               return (
                 <tr key={post.id}>
                   <td>{post.title}</td>
-                  <td>{post.userId}</td>
-                  <td>1961</td>
+                  <td>{post.authorId}</td>
+                  <td>{post.createdAt}</td>
                   <td>
                     <Link to={`/posts/${post.id}`}> Open Memory </Link>
                   </td>

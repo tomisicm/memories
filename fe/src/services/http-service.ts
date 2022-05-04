@@ -25,6 +25,14 @@ class HttpService {
     return Axios.delete(url, this.injectAuthHeader(options));
   }
 
+  setJwt(jwt: string) {
+    this.userJwt = jwt;
+  }
+
+  deleteJwt() {
+    this.userJwt = undefined;
+  }
+
   private injectAuthHeader(options: AxiosRequestConfig) {
     if (!this.userJwt) {
       return options;

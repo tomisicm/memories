@@ -13,7 +13,7 @@ class PostsService {
 
   constructor() {
     this.httpService = httpService;
-    this.baseUrl = "https://jsonplaceholder.typicode.com";
+    this.baseUrl = "http://localhost:3000";
   }
 
   async getAll(
