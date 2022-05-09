@@ -1,36 +1,16 @@
 import axios from "axios";
+
 import httpService from "../http-service";
-
-interface SigninResponse {
-  error?: string;
-  accessToken?: string;
-}
-
-interface SignupResponse {
-  error?: string;
-  accessToken?: string;
-}
-
-// TODO
-type SigninResponseError = {
-  error: string;
-};
-
-// TODO
-type SigninResponseSuccess = {
-  accessToken: string;
-};
-
-interface SigninBody {
-  username: string;
-  password: string;
-}
-
-interface SignUpBody {
-  email: string;
-  username: string;
-  password: string;
-}
+import {
+  SignInBody,
+  SignInResponse,
+  SignInResponseSuccess,
+} from "./signin.auth.types";
+import {
+  SignUpBody,
+  SignupResponse,
+  SignupResponseSuccess,
+} from "./signup.auth.types";
 
 class AuthService {
   private readonly httpService: typeof httpService;
@@ -44,49 +24,69 @@ class AuthService {
   public async signin({
     username,
     password,
-  }: SigninBody): Promise<SigninResponse> {
+  }: SignInBody): Promise<SignInResponse> {
     try {
-      const { data } = await this.httpService.post<SigninBody, SigninResponse>(
-        `${this.baseUrl}/auth/signin`,
-        {
-          username: username,
-          password: password,
-        }
-      );
+      const { data } = await this.httpService.post<
+        SignInBody,
+        SignInResponseSuccess["data"]
+      >(`${this.baseUrl}/auth/signin`, {
+        username: username,
+        password: password,
+      });
 
-      return data;
+      return { data, state: "success" };
     } catch (e) {
       const error = e as Error;
 
       if (axios.isAxiosError(error)) {
-        return { error: error.response?.data.message };
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
       }
 
-      return { error: "Something went wrong!" };
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
     }
   }
 
-  // TODO
-  public async signup({ username, password, email }: SignUpBody) {
+  public async signup({
+    username,
+    password,
+    email,
+  }: SignUpBody): Promise<SignupResponse> {
     try {
-      const { data } = await this.httpService.post<SignUpBody, SignupResponse>(
-        `${this.baseUrl}/auth/signin`,
-        {
-          email: email,
-          username: username,
-          password: password,
-        }
-      );
+      const { data } = await this.httpService.post<
+        SignUpBody,
+        SignupResponseSuccess["data"]
+      >(`${this.baseUrl}/auth/signup`, {
+        email: email,
+        username: username,
+        password: password,
+      });
 
-      return data;
+      return { state: "success", data };
     } catch (e) {
       const error = e as Error;
+      // construct error objects based on code
 
       if (axios.isAxiosError(error)) {
-        return { error: error.response?.data.message };
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
       }
 
-      return { error: "Something went wrong!" };
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
     }
   }
 }

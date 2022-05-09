@@ -5,9 +5,9 @@ import { PostsContextProvider } from "./stores/posts-store/post-store";
 import { UserContextProvider } from "./stores/user-store/user-store";
 import Posts from "./pages/posts";
 import Post from "./pages/post";
-import Login from "./pages/login";
-import Register from "./pages/register";
-import Nav from "./components/navigation";
+import Login from "./pages/signin";
+import Register from "./pages/signup";
+import Nav from "./components/navigation/navigation";
 import { HOME_PAGE } from "./constants";
 
 const NoMatch = () => {
@@ -30,10 +30,12 @@ class App extends React.Component {
           <div className="container mx-auto">
             <Root>
               <Routes>
+                <Route path="/">
+                  <Route path="/posts" element={<Posts />} />
+                  <Route path="/posts/:id" element={<Post />} />
+                </Route>
                 <Route path="/signin" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/home" element={<Posts />} />
-                <Route path="/posts/:id" element={<Post />} />
+                <Route path="/signup" element={<Register />} />
 
                 <Route path="*" element={<NoMatch />} />
               </Routes>

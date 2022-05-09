@@ -1,0 +1,165 @@
+import { useForm } from "react-hook-form";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import {
+  defaultSignUpValues,
+  SignUpFormFields,
+  UserSignupForm,
+  validationSchema,
+} from "./form-data/register-form-data";
+import { RegisterUserFormState } from "../pages/signup";
+
+interface RegisterFormProps {
+  handleSubmit: (values: UserSignupForm) => void;
+  formData: RegisterUserFormState;
+}
+
+const SignupForm = ({
+  handleSubmit,
+  formData,
+}: RegisterFormProps): JSX.Element => {
+  const onSubmit = (values: UserSignupForm) => {
+    handleSubmit(values);
+  };
+
+  const {
+    register,
+    handleSubmit: handleSubmitEvent,
+    reset,
+    formState: { errors },
+  } = useForm<UserSignupForm>({
+    resolver: yupResolver(validationSchema),
+  });
+
+  if (formData.loading) {
+    // handle loading state
+  }
+
+  if (formData.error) {
+    // handle error state
+  }
+
+  return (
+    <div>
+      <div>{JSON.stringify(formData)}</div>
+
+      <div className="max-w-md mx-auto px-6 my-6">
+        <h3 className="mb-6 font-bold text-lg">Sign Up</h3>
+
+        <form onSubmit={handleSubmitEvent(onSubmit)}>
+          <div className="flex flex-col mb-4">
+            <label
+              htmlFor="username"
+              className="mb-2 font-bold text-grey-darkest"
+            >
+              Username
+            </label>
+            <input
+              className="py-2 px-3 text-grey-darkest"
+              placeholder="Username"
+              defaultValue={defaultSignUpValues.username as string}
+              {...register(SignUpFormFields.username)}
+            />
+            <small
+              className={`${errors.username?.message ? "text-red-500" : ""}`}
+            >
+              {errors.username?.message}
+            </small>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <label htmlFor="email" className="mb-2 font-bold text-grey-darkest">
+              Email
+            </label>
+            <input
+              placeholder="Email"
+              className="py-2 px-3 text-grey-darkest"
+              defaultValue={defaultSignUpValues.email as string}
+              {...register(SignUpFormFields.email)}
+            />
+            <small className={`${errors.email?.message ? "text-red-500" : ""}`}>
+              {errors.email?.message}
+            </small>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <label
+              htmlFor="password"
+              className="mb-2 font-bold text-grey-darkest"
+            >
+              Password
+            </label>
+            <input
+              placeholder="Password"
+              className="py-2 px-3 text-grey-darkest"
+              defaultValue={defaultSignUpValues.password as string}
+              {...register(SignUpFormFields.password)}
+            />
+            <small
+              className={`${errors.password?.message ? "text-red-500" : ""}`}
+            >
+              {errors.password?.message}
+            </small>
+          </div>
+
+          <div className="flex flex-col mb-6">
+            <label
+              htmlFor="confirm-password"
+              className="mb-2 font-bold text-grey-darkest"
+            >
+              Confirm Password
+            </label>
+            <input
+              id="confirm-password"
+              placeholder="Confirm Password"
+              className="py-2 px-3 text-grey-darkest"
+              defaultValue={defaultSignUpValues.confirmPassword as string}
+              {...register(SignUpFormFields.confirmPassword)}
+            />
+            <small
+              className={`${
+                errors.confirmPassword?.message ? "text-red-500" : ""
+              }`}
+            >
+              {errors.confirmPassword?.message}
+            </small>
+          </div>
+
+          <div className="flex-row mb-6">
+            <input
+              id="terms-and-conditions"
+              type="checkbox"
+              className="text-grey-darkest mx-2 mb-2 content-center"
+              {...register(SignUpFormFields.terms)}
+            />
+            <label
+              htmlFor="terms-and-conditions"
+              className="mb-2 font-bold text-grey-darkest"
+            >
+              Terms and Conditions
+            </label>
+            <small
+              className={`block ${errors.terms?.message ? "text-red-500" : ""}`}
+            >
+              {errors.terms?.message}
+            </small>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <button
+              className="text-base font-semibold bg-gray-800 text-white 
+      rounded-lg px-6 py-1 block shadow-xl hover:text-white hover:bg-black"
+              type="submit"
+              disabled={false}
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignupForm;
