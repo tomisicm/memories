@@ -29,8 +29,6 @@ export class PostRepositoryService {
     postEntity: T
   ): Promise<PostEntity> {
     try {
-      console.log("postEntity", postEntity);
-
       return await this.postRepository.save({
         ...postEntity,
         author: postEntity.authorId,

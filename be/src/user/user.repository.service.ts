@@ -50,8 +50,21 @@ export class UserRepositoryService {
     }
   }
 
-  async findOneOrFail(username: string): Promise<UserEntity> {
-    return await this.userRepository.findOneOrFail({ where: { username } });
+  /** auth purposes only */
+  async findOneOrFail(
+    username: string,
+    select: Array<keyof UserEntity> = [
+      "id",
+      "username",
+      "email",
+      "password",
+      "salt",
+    ]
+  ): Promise<UserEntity> {
+    return await this.userRepository.findOneOrFail({
+      where: { username },
+      select: select,
+    });
   }
 
   async validateUserPassword({

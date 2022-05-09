@@ -7,9 +7,12 @@ interface PrivateDetails {
   password: string;
 }
 
-export interface IUser {
+export interface IUserIdentity {
   id: string;
   username: string;
   email: string;
+}
+
+export interface IUser extends IUserIdentity {
   posts: PostEntity[];
 }

@@ -18,7 +18,7 @@ import { JwtStrategy } from "../strategy/jwt.strategy";
 import { LocalStrategy } from "../strategy/local.strategy";
 
 jest.mock("../auth.service");
-jest.mock("../../user/user.repisitory.service");
+jest.mock("../../user/user.repository.service");
 
 const authConfig = {
   secret: "secret",

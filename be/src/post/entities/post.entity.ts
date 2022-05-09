@@ -28,10 +28,14 @@ export class PostEntity {
   @Column({ type: "enum", enum: Status, default: Status.Public })
   status: Status;
 
-  authorId: string; // TODO
+  @Column({ type: "varchar" })
+  authorId: string;
 
-  @ManyToOne(() => UserEntity, (author: UserEntity) => author.posts)
-  public author: UserEntity;
+  @ManyToOne(
+    () => UserEntity,
+    (author: Omit<UserEntity, "password" | "salt">) => author.posts
+  )
+  public author: Omit<UserEntity, "password" | "salt">;
 
   @CreateDateColumn()
   createdAt: Date;

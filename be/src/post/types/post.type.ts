@@ -9,7 +9,7 @@ export interface IPost extends AuthorIdentity {
   title: string;
   body: string;
   status: Status;
-  author: UserEntity;
+  author: Omit<UserEntity, "salt" | "password">;
   img?: string;
   createdAt: Date;
   updatedAt: Date;

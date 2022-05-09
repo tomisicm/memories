@@ -18,13 +18,13 @@ export class UserEntity extends BaseEntity {
   @Column({ type: "varchar", length: "32", unique: true })
   username: string;
 
-  @Column({ type: "varchar", length: "32", unique: true })
+  @Column({ type: "varchar", length: "64", unique: true })
   email: string;
 
-  @Column({ type: "varchar", length: "64" })
+  @Column({ type: "varchar", length: "64", select: false })
   salt: string;
 
-  @Column({ type: "varchar", length: "64" })
+  @Column({ type: "varchar", length: "64", select: false })
   password: string;
 
   @OneToMany(() => PostEntity, (post: PostEntity) => post.author)

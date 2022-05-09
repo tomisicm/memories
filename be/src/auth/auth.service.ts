@@ -5,6 +5,7 @@ import { UserEntity } from "../user/entities/user.entity";
 import { CreateUserDto, SignInUserDto } from "./dto/auth-credentials.dto";
 import { UserRepositoryService } from "../user/user.repository.service";
 import { JwtPayload } from "./types/auth-payload.interface";
+import { IUserIdentity } from "src/user/types/user.type";
 
 @Injectable()
 export class AuthService {
@@ -13,11 +14,18 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async signUp(createUserDto: CreateUserDto) {
-    return await this.userRepositorySerice.create(createUserDto);
+  async signUp(createUserDto: CreateUserDto): Promise<IUserIdentity> {
+    const user = await this.userRepositorySerice.create(createUserDto);
+
+    const selectedUserProps: IUserIdentity = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    };
+
+    return selectedUserProps;
   }
 
-  // TODO:
   async signIn(
     authCredentialsDto: SignInUserDto
   ): Promise<{ accessToken: string }> {

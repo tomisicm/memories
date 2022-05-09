@@ -21,8 +21,8 @@ import { IPost } from "./types/post.type";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { CreatePostDto } from "./dto/create-post.dto";
 import { PostsFilterDto } from "./dto/post-filter.dto";
-import { CurrentUser } from "src/auth/current-user.decorator";
-import { UserEntity } from "src/user/entities/user.entity";
+import { CurrentUser } from "../auth/current-user.decorator";
+import { UserEntity } from "../user/entities/user.entity";
 
 @ApiTags(ControllerTag.Posts)
 @Controller("posts")
@@ -46,7 +46,7 @@ export class PostController {
   getPostById(
     @Param("id", ParseIntPipe) id: string,
     @CurrentUser() user: UserEntity
-  ): Promise<IPost> | IPost {
+  ): Promise<IPost> {
     return this.postService.getPostById(user, id);
   }
 
