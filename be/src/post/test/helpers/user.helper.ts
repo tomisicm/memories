@@ -1,5 +1,5 @@
-import { UserEntity } from "../../user/entities/user.entity";
-import { IUser } from "../../user/types/user.type";
+import { UserEntity } from "../../../user/entities/user.entity";
+import { IUser } from "../../../user/types/user.type";
 
 export const createDummyUser = (override?: Partial<IUser>): UserEntity => {
   return {

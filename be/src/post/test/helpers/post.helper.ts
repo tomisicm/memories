@@ -1,6 +1,6 @@
-import { UserEntity } from "../../user/entities/user.entity";
-import { Status } from "../entities/post.entity";
-import { IPost } from "../types/post.type";
+import { UserEntity } from "../../../user/entities/user.entity";
+import { Status } from "../../entities/post.entity";
+import { IPost } from "../../types/post.type";
 
 const userEntity: Omit<UserEntity, "salt" | "password"> = {
   id: "",

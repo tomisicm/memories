@@ -8,8 +8,8 @@ import { TypedMockType } from "../../shared/mocks/types.mocks";
 import { PostEntity, Status } from "../entities/post.entity";
 import { mockRepositoryProvider } from "../../shared/mocks/mock-repository-provider";
 import { PostManagementService } from "../post.management.service";
-import { createDummyPost } from "./post.helper";
-import { createDummyUser } from "./user.helper";
+import { createDummyPost } from "./helpers/post.helper";
+import { createDummyUser } from "./helpers/user.helper";
 
 jest.mock("../post.repository.service");
 
