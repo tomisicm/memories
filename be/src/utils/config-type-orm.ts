@@ -1,7 +1,5 @@
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "../user/entities/user.entity";
-import { PostEntity } from "../post/entities/post.entity";
 
 import {
   TYPEORM_HOST,
@@ -35,10 +33,10 @@ export const configureTypeORM = () =>
         database: configService.get<string>(TYPEORM_DATABASE),
         url: dbUrl,
         logging: configService.get<string>(TYPEORM_LOGGING) === "true",
-        // entities: ["dist/**/*.entity.js"],
-        entities: [PostEntity, UserEntity],
+        entities: [__dirname + "/../**/*.entity.js"],
         migrations: ["src/migrations/**/*{.ts,.js}"],
         synchronize: true,
+        autoLoadEntities: true,
         cli: {
           migrationsDir: "src/migrations",
         },

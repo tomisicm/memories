@@ -4,6 +4,7 @@ import { WinstonModule } from "nest-winston";
 import type { transport } from "winston";
 
 import { AuthModule } from "./auth/auth.module";
+import { CommentModule } from "./comments/comments.module";
 import { PostModule } from "./post/post.module";
 import { configureTypeORM } from "./utils/config-type-orm";
 
@@ -27,6 +28,7 @@ import { configureTypeORM } from "./utils/config-type-orm";
     }),
     AuthModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],

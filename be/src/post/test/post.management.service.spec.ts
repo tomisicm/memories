@@ -4,19 +4,25 @@ import { INestApplication, UnauthorizedException } from "@nestjs/common";
 
 import { PostService } from "../post.service";
 import { PostRepositoryService } from "../post.repository.service";
-import { TypedMockType } from "../../shared/mocks/types.mocks";
 import { PostEntity, Status } from "../entities/post.entity";
 import { mockRepositoryProvider } from "../../shared/mocks/mock-repository-provider";
 import { PostManagementService } from "../post.management.service";
 import { createDummyPost } from "./helpers/post.helper";
 import { createDummyUser } from "./helpers/user.helper";
+import { PostCommentRepositoryService } from "../post.comments.repository.service";
 
 jest.mock("../post.repository.service");
+jest.mock("../post.comments.repository.service");
 
 const setup = async () => {
   const moduleRef: TestingModule = await Test.createTestingModule({
     imports: [TypeOrmModule.forFeature([PostEntity])],
-    providers: [PostService, PostRepositoryService, PostManagementService],
+    providers: [
+      PostService,
+      PostRepositoryService,
+      PostManagementService,
+      PostCommentRepositoryService,
+    ],
   })
     .overrideProvider(getRepositoryToken(PostEntity))
     .useValue(mockRepositoryProvider())

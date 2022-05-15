@@ -9,8 +9,8 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
-  ParseIntPipe,
   UseGuards,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
@@ -44,7 +44,7 @@ export class PostController {
   @ApiOperation({ summary: "Get post by id" })
   @Get("/:id")
   getPostById(
-    @Param("id", ParseIntPipe) id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @CurrentUser() user: UserEntity
   ): Promise<IPost> {
     return this.postService.getPostById(user, id);
@@ -63,7 +63,7 @@ export class PostController {
   @ApiOperation({ summary: "Update post by id" })
   @Patch("/:id")
   async updatePost(
-    @Param("id") id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @Body(ValidationPipe) updatePostDto: CreatePostDto,
     @CurrentUser() user: UserEntity
   ): Promise<IPost | false> {
@@ -73,7 +73,7 @@ export class PostController {
   @ApiOperation({ summary: "Delete post by id" })
   @Delete("/:id")
   async deletePost(
-    @Param("id", ParseIntPipe) id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @CurrentUser() user: UserEntity
   ): Promise<boolean> {
     return await this.postService.delete(user, id);

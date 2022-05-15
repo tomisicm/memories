@@ -1,20 +1,15 @@
-import { UserEntity } from "../../user/entities/user.entity";
-
-import { AuthorIdentity } from "../../user/types/author-identity";
 import { Status } from "../entities/post.entity";
-import { IComment } from "./comment.type";
+import { HasComments } from "../../comments/interfaces/commentable";
+import { UserEntity } from "../../user/entities/user.entity";
+import { AuthorIdentity } from "../../user/types/author-identity";
 
-export interface IPost extends AuthorIdentity {
+// TODO: img url
+export interface IPost extends AuthorIdentity, HasComments {
   id: string;
   title: string;
   body: string;
   status: Status;
-  author: Omit<UserEntity, "salt" | "password">;
-  img?: string;
+  author?: Omit<UserEntity, "salt" | "password">;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface IPostFeed extends IPost {
-  comments: IComment[];
 }

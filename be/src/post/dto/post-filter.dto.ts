@@ -1,5 +1,6 @@
 export interface PostsFilterDto {
-  includePrivate: boolean;
+  includePrivate?: boolean;
+  includeComments?: boolean;
   authorId?: string;
   title?: string;
 }

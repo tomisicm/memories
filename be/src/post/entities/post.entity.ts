@@ -3,10 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
+import { CommentEntity } from "../../comments/entities/comment.entity";
 import { UserEntity } from "../../user/entities/user.entity";
 
 export enum Status {
@@ -35,7 +37,10 @@ export class PostEntity {
     () => UserEntity,
     (author: Omit<UserEntity, "password" | "salt">) => author.posts
   )
-  public author: Omit<UserEntity, "password" | "salt">;
+  author?: Omit<UserEntity, "password" | "salt">;
+
+  @OneToMany(() => CommentEntity, (comment: CommentEntity) => comment.post)
+  comments?: CommentEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

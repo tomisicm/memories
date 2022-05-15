@@ -28,5 +28,5 @@ export class UserEntity extends BaseEntity {
   password: string;
 
   @OneToMany(() => PostEntity, (post: PostEntity) => post.author)
-  public posts: PostEntity[];
+  public posts?: PostEntity[];
 }

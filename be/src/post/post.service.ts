@@ -9,12 +9,14 @@ import { CreatePostDto } from "./dto/create-post.dto";
 import { PostsFilterDto } from "./dto/post-filter.dto";
 import { PostEntity, Status } from "./entities/post.entity";
 import { IUser } from "../user/types/user.type";
+import { PostCommentRepositoryService } from "./post.comments.repository.service";
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly postRepositoryService: PostRepositoryService,
-    private readonly postManagementService: PostManagementService
+    private readonly postManagementService: PostManagementService,
+    private readonly postCommentRepositoryService: PostCommentRepositoryService
   ) {}
 
   async filterPosts(
@@ -40,7 +42,7 @@ export class PostService {
     }
 
     try {
-      posts = await this.postRepositoryService.find({
+      posts = await this.postCommentRepositoryService.getPosts({
         where: query,
       });
 

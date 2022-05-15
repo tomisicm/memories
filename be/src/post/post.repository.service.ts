@@ -69,6 +69,17 @@ export class PostRepositoryService {
     }
   }
 
+  async findOrFail(options: FindManyOptions<PostEntity>): Promise<PostEntity> {
+    try {
+      return await this.postRepository.findOneOrFail(options);
+    } catch (err) {
+      throw new VError(
+        { cause: err as Error, info: { options } },
+        "An error occurred querying posts."
+      );
+    }
+  }
+
   async findOneBy(options: FindOptionsWhere<PostEntity>): Promise<PostEntity> {
     try {
       return await this.postRepository.findOneBy(options);

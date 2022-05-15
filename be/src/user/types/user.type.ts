@@ -2,7 +2,7 @@ import { UserEntity } from "../../user/entities/user.entity";
 
 import { PostEntity } from "../../post/entities/post.entity";
 
-interface PrivateDetails {
+interface IUserPrivateDetails {
   salt: string;
   password: string;
 }
@@ -14,5 +14,5 @@ export interface IUserIdentity {
 }
 
 export interface IUser extends IUserIdentity {
-  posts: PostEntity[];
+  posts?: PostEntity[];
 }

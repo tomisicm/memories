@@ -6,7 +6,6 @@ const userEntity: Omit<UserEntity, "salt" | "password"> = {
   id: "",
   username: "",
   email: "",
-  posts: [],
   hasId: () => null,
   save: () => null,
   remove: () => null,

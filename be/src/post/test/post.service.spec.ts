@@ -10,13 +10,20 @@ import { mockRepositoryProvider } from "../../shared/mocks/mock-repository-provi
 import { PostManagementService } from "../post.management.service";
 import { createDummyPost } from "./helpers/post.helper";
 import { createDummyUser } from "./helpers/user.helper";
+import { PostCommentRepositoryService } from "../post.comments.repository.service";
 
 jest.mock("../post.repository.service");
+jest.mock("../post.comments.repository.service");
 
 const setup = async () => {
   const moduleRef: TestingModule = await Test.createTestingModule({
     imports: [TypeOrmModule.forFeature([PostEntity])],
-    providers: [PostService, PostRepositoryService, PostManagementService],
+    providers: [
+      PostService,
+      PostRepositoryService,
+      PostManagementService,
+      PostCommentRepositoryService,
+    ],
   })
     .overrideProvider(getRepositoryToken(PostEntity))
     .useValue(mockRepositoryProvider())
@@ -32,7 +39,7 @@ describe("PostService", () => {
   let app: INestApplication;
   let moduleRef: TestingModule;
   let postService: PostService;
-  let postRepositoryService: TypedMockType<PostRepositoryService>;
+  let postCommentRepositoryService: TypedMockType<PostCommentRepositoryService>;
 
   beforeEach(async () => {
     moduleRef = await setup();
@@ -40,14 +47,15 @@ describe("PostService", () => {
     await app.init();
 
     postService = app.get<PostService>(PostService);
-    postRepositoryService = app.get<TypedMockType<PostRepositoryService>>(
-      PostRepositoryService
-    );
+
+    postCommentRepositoryService = app.get<
+      TypedMockType<PostCommentRepositoryService>
+    >(PostCommentRepositoryService);
   });
 
   describe("[filterPosts]", () => {
     beforeEach(async () => {
-      postRepositoryService.find.mockResolvedValue([post]);
+      postCommentRepositoryService.getPosts.mockResolvedValue([post]);
     });
 
     it("includePrivate proerty", async () => {
@@ -56,7 +64,7 @@ describe("PostService", () => {
       });
 
       expect.assertions(1);
-      expect(postRepositoryService.find).toBeCalledWith({
+      expect(postCommentRepositoryService.getPosts).toBeCalledWith({
         where: [
           { status: Status.Public },
           { status: Status.Private, authorId: user.id },
@@ -70,7 +78,7 @@ describe("PostService", () => {
       });
 
       expect.assertions(1);
-      expect(postRepositoryService.find).toBeCalledWith({
+      expect(postCommentRepositoryService.getPosts).toBeCalledWith({
         where: [{ status: Status.Public }],
       });
     });

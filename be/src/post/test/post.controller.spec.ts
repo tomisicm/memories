@@ -11,8 +11,10 @@ import { PostManagementService } from "../post.management.service";
 import { createDummyPost } from "./helpers/post.helper";
 import { createDummyUser } from "./helpers/user.helper";
 import { PostController } from "../post.controller";
+import { PostCommentRepositoryService } from "../post.comments.repository.service";
 
 jest.mock("../post.repository.service");
+jest.mock("../post.comments.repository.service");
 
 const setup = async () => {
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -22,6 +24,7 @@ const setup = async () => {
       PostService,
       PostRepositoryService,
       PostManagementService,
+      PostCommentRepositoryService,
     ],
   })
     .overrideProvider(getRepositoryToken(PostEntity))
