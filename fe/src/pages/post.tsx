@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import postsService from "./../services/posts/posts-service";
 import { IPostAndComments } from "../types/posts";
-import PageLayout from "../components/layouts/page-layout";
+import PageLayout from "../components/layouts/post-page-layout";
 
 // deals with fetching logic
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useUsersContext } from "../stores/user-store/use-user-context-hook";
 import authService from "../services/auth/auth.service";
-import LoginForm from "../components/signin-form";
+import SigninForm from "../components/signin-form";
 import { UserSigninForm } from "../components/form-data/signin-form-data";
 
 export interface SignupUserFormState {
@@ -63,7 +63,7 @@ const Page = (): JSX.Element => {
 
   return (
     <div className="bg-gray-200 relative min-h-screen antialiased border-t-8 border-black">
-      <LoginForm handleSubmit={loginUserHandler} formData={userFormState} />
+      <SigninForm handleSubmit={loginUserHandler} formData={userFormState} />
     </div>
   );
 };
