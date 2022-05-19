@@ -13,6 +13,5 @@ export const getDummyPost = (overrides?: Partial<IPost>): IPost => ({
   title: "title",
   body: "body",
   createdAt: new Date().toLocaleString(),
-  author: author,
   ...overrides,
 });

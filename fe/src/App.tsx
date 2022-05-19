@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { PostsContextProvider } from "./stores/posts-store/post-store";
+import { PostsContextProvider } from "./stores/posts-store/posts-store";
 import { UserContextProvider } from "./stores/user-store/user-store";
 import Posts from "./pages/posts";
 import Post from "./pages/post";

@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { PostStore } from "./post-store";
+import { PostsStore } from "./posts-store";
 
 export const usePostsContext = () => {
-  const context = useContext(PostStore);
+  const context = useContext(PostsStore);
 
   if (context === undefined) {
     throw new Error("usePostsContext was used outside of its Provider");

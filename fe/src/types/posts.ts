@@ -8,9 +8,8 @@ export interface IPost {
   body: string;
   img?: string;
   createdAt: string;
-  author: IAuthor;
 }
 
-export interface IPostAndComments extends IPost {
+export interface IPostAndComments extends IPost, IAuthor {
   comments: IComment[];
 }

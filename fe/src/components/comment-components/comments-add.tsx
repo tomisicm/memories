@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-import { IComment } from "../../../types/coments";
+import { IComment } from "../../types/coments";
 import {
   CommentForm,
   CommentFormFields,
   validationSchema,
-} from "./add-new-comment-form.data";
+} from "./comment-form.data";
 
 // TODO delete data?
 interface AddCommentProps {

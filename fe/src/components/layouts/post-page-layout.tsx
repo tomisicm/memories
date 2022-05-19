@@ -1,18 +1,12 @@
-import { ReactElement, useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import { LoadingSpinner } from "../spinner";
 import { CommentsList } from "../comment-components/comments-list";
-import { AddComment } from "../comment-components/add-new/comments-add-new";
+import { AddComment } from "../comment-components/comments-add";
 import { PostWrapper } from "../post-components/post-wrapper";
 import commentService from "../../services/comments/comments.service";
-import { IPostAndComments } from "../../types/posts";
-import { IComment } from "../../types/coments";
-
-interface PageLayoutProps {
-  loading: boolean;
-  post: IPostAndComments | null;
-  error: string | null;
-}
+import { usePostContext } from "../../stores/post-store/use-post-context-hook";
+import { PostState } from "../../stores/post-store/post-types";
 
 export interface NewCommentFormState {
   loading: boolean;
@@ -26,13 +20,11 @@ export interface UpdateCommentFormState {
   error: undefined | string;
 }
 
-/** presentation */
-const PageLayout = ({
-  loading: postLoading,
-  post,
-  error: postError,
-}: PageLayoutProps): JSX.Element => {
-  const comments: IComment[] | undefined = post?.comments;
+const PageLayout = (): JSX.Element => {
+  const { id } = useParams() as { id: string };
+  const postContext = usePostContext();
+
+  const { error, post, loading } = postContext?.state || ({} as PostState);
 
   const initialNewCommentFormState: NewCommentFormState = {
     loading: false,
@@ -45,6 +37,14 @@ const PageLayout = ({
     data: {},
     error: undefined,
   };
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      postContext?.fetchPostFeed(id);
+    };
+
+    fetchPost();
+  }, [id]);
 
   const [newCommentFormState, setNewCommentFormState] =
     useState<NewCommentFormState>(initialNewCommentFormState);
@@ -94,14 +94,18 @@ const PageLayout = ({
     }
   };
 
-  const handleUpdateNewComment = async (comment: any) => {
+  const handleUpdateComment = async (comment: any) => {
     // TODO
   };
+
+  if (!post) {
+    return <div>Post not found, go back</div>;
+  }
 
   return (
     <div className="container mx-auto">
       <div className="mx-3 my-3">
-        <PostWrapper loading={postLoading} post={post} error={postError} />
+        <PostWrapper loading={loading} post={post} error={error} />
       </div>
 
       <div className="container px-8">
@@ -112,10 +116,10 @@ const PageLayout = ({
           onClickHandler={handleAddNewComment}
         />
         <CommentsList
-          loading={newCommentFormState.loading}
-          data={newCommentFormState.data}
-          error={newCommentFormState.error}
-          onClickHandler={handleUpdateNewComment}
+          loading={loading}
+          data={post?.comments}
+          error={error}
+          onClickHandler={handleUpdateComment}
         />
       </div>
     </div>

@@ -1,5 +1,7 @@
+import axios from "axios";
 import { IPost, IPostAndComments } from "../../types/posts";
 import httpService from "../http-service";
+import { GetPostResponse, GetPostResponseSuccess } from "./posts-service.types";
 
 // https://github.com/typicode/json-server#paginate
 interface IPaginationProperties {
@@ -33,14 +35,29 @@ class PostsService {
     }
   }
 
-  async get(id: string): Promise<IPostAndComments | void> {
+  async get(id: string): Promise<GetPostResponse> {
     try {
-      const response = await this.httpService.get<IPostAndComments>(
-        `${this.baseUrl}/posts/${id}?_embed=comments`
-      );
-      return response.data;
+      const { data } = await this.httpService.get<
+        GetPostResponseSuccess["data"]
+      >(`${this.baseUrl}/posts/${id}?_embed=comments`);
+
+      return { data, state: "success" };
     } catch (e) {
-      console.log(e);
+      const error = e as Error;
+
+      if (axios.isAxiosError(error)) {
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
+      }
+
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
     }
   }
 

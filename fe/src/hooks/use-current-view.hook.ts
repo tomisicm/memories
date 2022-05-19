@@ -5,9 +5,6 @@ export enum CurrentView {
   Edit = "edit",
 }
 
-// TODO
-// https://usehooks.com/
-// https://reactjs.org/docs/hooks-custom.html
 export const useCurrentView = (initialState = CurrentView.Edit) => {
   const [currentView, setCurrentView] = useState<CurrentView>(initialState);
 

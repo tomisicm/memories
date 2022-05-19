@@ -3,7 +3,7 @@ import { IPost } from "../../types/posts";
 const SET_POSTS = "SET_POSTS";
 const UPDATE_POSTS = "UPDATE_POSTS";
 
-interface PostState {
+interface PostsState {
   posts: IPost[];
 }
 
@@ -16,4 +16,4 @@ interface SetPostAction {
 type PostActions = SetPostAction;
 
 export { SET_POSTS, UPDATE_POSTS };
-export type { SetPostAction, PostActions, PostState };
+export type { SetPostAction, PostActions, PostsState };

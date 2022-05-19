@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import { IPost } from "../../types/posts";
 
-import { SetPostAction, SET_POSTS } from "./post-types";
+import { SetPostAction, SET_POSTS } from "./posts-types";
 
 const setPostsAction = (
   posts: IPost[],

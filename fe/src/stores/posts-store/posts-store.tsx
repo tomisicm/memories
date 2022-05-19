@@ -10,12 +10,14 @@ import { setPostsAction } from "./posts-actions";
 import { initialPostsState, postsReducer } from "./posts-reducer";
 import postsService from "../../services/posts/posts-service";
 
+// TODO: most likely remove
+
 interface IPostsContext {
   state: any;
   fetchDataFeed: () => {};
 }
 
-const PostStore = createContext<IPostsContext | null>(null);
+const PostsStore = createContext<IPostsContext | null>(null);
 
 const PostsContextProvider = ({
   children,
@@ -23,30 +25,18 @@ const PostsContextProvider = ({
   const [state, dispatch] = useReducer(postsReducer, initialPostsState);
 
   const fetchDataFeed = async () => {
-    const postData = await postsService.getAll();
+    const postsData = await postsService.getAll();
 
-    if (postData) {
-      setPostsAction(postData, dispatch);
+    if (postsData) {
+      setPostsAction(postsData, dispatch);
     }
   };
 
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const postData = await postsService.getAll();
-
-  //     if (postData) {
-  //       setPostsAction(postData, dispatch);
-  //     }
-  //   };
-
-  //   fetchPosts();
-  // }, []);
-
   return (
-    <PostStore.Provider value={{ state, fetchDataFeed }}>
+    <PostsStore.Provider value={{ state, fetchDataFeed }}>
       {children}
-    </PostStore.Provider>
+    </PostsStore.Provider>
   );
 };
 
-export { PostStore, PostsContextProvider };
+export { PostsStore, PostsContextProvider };

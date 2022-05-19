@@ -1,13 +1,13 @@
-import { PostState, PostActions, SET_POSTS } from "./post-types";
+import { PostsState, PostActions, SET_POSTS } from "./posts-types";
 
-const initialPostsState: PostState = {
+const initialPostsState: PostsState = {
   posts: [],
 };
 
 const postsReducer = (
   state = initialPostsState,
   action: PostActions
-): PostState => {
+): PostsState => {
   switch (action.type) {
     case SET_POSTS: {
       return {
