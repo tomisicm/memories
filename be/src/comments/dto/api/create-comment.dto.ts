@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsIn,
   IsUUID,
+  IsOptional,
 } from "class-validator";
 
 import { Status } from "../../entities/comment.entity";
@@ -21,6 +22,7 @@ export class CreateCommentDto implements ICreateCommentDto {
   @MaxLength(64)
   body: string;
 
+  @IsOptional()
   @IsEnum(Status)
   @IsIn([Status.PUBLIC])
   status: Status;

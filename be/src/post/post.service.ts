@@ -58,7 +58,7 @@ export class PostService {
     let post: IPost;
 
     try {
-      post = await this.postRepositoryService.findOneBy({ id });
+      post = await this.postCommentRepositoryService.findOneBy({ id });
     } catch (e) {
       throw new NotFoundException("Post not found!");
     }
