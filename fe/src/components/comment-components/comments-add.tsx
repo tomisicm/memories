@@ -11,7 +11,7 @@ import {
 // TODO delete data?
 interface AddCommentProps {
   loading: boolean;
-  data: any;
+  data: IComment;
   error: string | undefined;
   onClickHandler: (e: any) => void;
 }

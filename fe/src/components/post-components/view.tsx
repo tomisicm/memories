@@ -15,13 +15,13 @@ const ViewPost = ({
   return (
     <div className="mx-4 my-4 border-2 border-slate-400 rounded-md">
       <div className="px-6 py-6 ">
-        <h1 className="font-mono capitalize font-semibold text-xl">
-          {post?.title}
+        <h1 className="my-2 font-mono capitalize font-semibold text-xl">
+          {post.title}
         </h1>
 
-        <div className="py-4 px-6">
+        <div className="py-4 px-6 w-96">
           <img
-            className="object-contain h-96 h-48 rounded-md"
+            className="object-contain h-48 rounded-md"
             src="https://s1.1zoom.me/b3559/165/Texture_Stones_Many_574636_600x800.jpg"
             alt="story_img"
           />
