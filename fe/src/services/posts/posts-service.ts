@@ -1,7 +1,16 @@
 import axios from "axios";
 import { IPost, IPostAndComments } from "../../types/posts";
 import httpService from "../http-service";
-import { GetPostResponse, GetPostResponseSuccess } from "./posts-service.types";
+import {
+  CreatePostResponse,
+  CreatePostResponseSuccess,
+  DeletePostResponse,
+  DeletePostResponseSuccess,
+  GetPostResponse,
+  GetPostResponseSuccess,
+  UpdatePostResponse,
+  UpdatePostResponseSuccess,
+} from "./posts-service.types";
 
 // https://github.com/typicode/json-server#paginate
 interface IPaginationProperties {
@@ -18,6 +27,7 @@ class PostsService {
     this.baseUrl = "http://localhost:3000";
   }
 
+  // TODO
   async getAll(
     { _page, _limit }: IPaginationProperties = {
       _page: 1,
@@ -61,16 +71,81 @@ class PostsService {
     }
   }
 
-  async update(id: string, body: any) {
-    return await this.httpService.put(`${this.baseUrl}/posts/${id}`, body);
+  async update(id: string, body: any): Promise<UpdatePostResponse> {
+    try {
+      const { data } = await this.httpService.put<
+        Omit<IPost, "id">,
+        UpdatePostResponseSuccess["data"]
+      >(`${this.baseUrl}/posts/${id}`, body);
+
+      return { data, state: "success" };
+    } catch (e) {
+      const error = e as Error;
+      if (axios.isAxiosError(error)) {
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
+      }
+
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
+    }
   }
 
-  async delete(id: string, body: any) {
-    return await this.httpService.delete(`${this.baseUrl}/posts/${id}`);
+  async create(body: Omit<IPost, "id">): Promise<CreatePostResponse> {
+    try {
+      const { data } = await this.httpService.post<
+        Omit<IPost, "id">,
+        CreatePostResponseSuccess["data"]
+      >(`${this.baseUrl}/posts`, body);
+
+      return { data, state: "success" };
+    } catch (e) {
+      const error = e as Error;
+      if (axios.isAxiosError(error)) {
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
+      }
+
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
+    }
   }
 
-  async create(id: string, body: any) {
-    return await this.httpService.post(`${this.baseUrl}/posts/${id}`, body);
+  async delete(id: string): Promise<DeletePostResponse> {
+    try {
+      const { data } = await this.httpService.delete<
+        DeletePostResponseSuccess["data"]
+      >(`${this.baseUrl}/posts/${id}`);
+
+      return { data, state: "success" };
+    } catch (e) {
+      const error = e as Error;
+      if (axios.isAxiosError(error)) {
+        return {
+          state: "failed",
+          code: error.response?.status as number,
+          message: error.response?.data.message as string,
+        };
+      }
+
+      return {
+        state: "failed",
+        code: 500,
+        message: "Something went wrong!",
+      };
+    }
   }
 }
 

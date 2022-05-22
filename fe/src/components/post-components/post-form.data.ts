@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-enum Status {
+export enum Status {
   private = "private",
   public = "public",
 }
@@ -17,14 +17,14 @@ export enum PostFormFields {
   status = "status",
 }
 
-export const defaultPostFormValues: Record<PostFormFields, string> = {
+export const defaultPostFormValues: Record<PostFormFields, string | Status> = {
   [PostFormFields.title]: "",
   [PostFormFields.body]: "",
-  [PostFormFields.status]: "public",
+  [PostFormFields.status]: Status.public as Status,
 };
 
 export const validationSchema = Yup.object().shape({
   title: Yup.string().min(1).max(64).required("Title is required"),
   body: Yup.string().min(1).max(255).required("Content is required"),
-  status: Yup.string().oneOf(["public", "private"]).optional(),
+  status: Yup.string().oneOf([Status.public, Status.private]).optional(),
 });

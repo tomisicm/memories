@@ -5,6 +5,7 @@ import { PostsContextProvider } from "./stores/posts-store/posts-store";
 import { UserContextProvider } from "./stores/user-store/user-store";
 import Posts from "./pages/posts";
 import Post from "./pages/post";
+import NewPost from "./pages/post-new";
 import Login from "./pages/signin";
 import Register from "./pages/signup";
 import Nav from "./components/navigation/navigation";
@@ -32,6 +33,7 @@ class App extends React.Component {
               <Routes>
                 <Route path="/">
                   <Route path="/posts" element={<Posts />} />
+                  <Route path="/posts/add" element={<NewPost />} />
                   <Route path="/posts/:id" element={<Post />} />
                 </Route>
                 <Route path="/signin" element={<Login />} />

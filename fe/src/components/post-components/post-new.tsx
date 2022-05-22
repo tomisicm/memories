@@ -1,24 +1,25 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-import { PostForm, PostFormFields } from "./post-form.data";
-import { validationSchema } from "../post-components/post-form.data";
+import { PostForm, PostFormFields, Status } from "./post-form.data";
+import { validationSchema, defaultPostFormValues } from "./post-form.data";
 
-interface EditPostProps {
+interface NewPostProps {
   loading: boolean;
-  post: any;
+  post?: any;
   error: undefined | string;
-  updateCurrentViewHandler: () => void;
-  updateEntityHandler: (post: any) => void;
+  createEntityHandler: (post: any) => void;
 }
 
-const EditPost = ({
+const NewPost = ({
   loading,
   post,
   error,
-  updateCurrentViewHandler,
-  updateEntityHandler,
-}: EditPostProps): JSX.Element => {
+  createEntityHandler,
+}: NewPostProps): JSX.Element => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit: handleSubmitEvent,
@@ -26,22 +27,22 @@ const EditPost = ({
   } = useForm<PostForm>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      title: post.title,
-      body: post.body,
-      status: post.status,
+      title: "",
+      body: "",
+      status: Status.public,
     },
   });
 
   const onSubmit = (data: PostForm) => {
-    updateEntityHandler(data);
+    createEntityHandler(data);
   };
 
   if (loading) {
-    return <div>{"loading..."}</div>;
+    // handle loading
   }
 
   if (error) {
-    return <div>{"something went wrong"}</div>;
+    // handle error
   }
 
   return (
@@ -83,7 +84,7 @@ const EditPost = ({
           <div className="flex justify-end">
             <button
               className="mx-2 text-base font-semibold bg-gray-400 text-white  rounded-lg px-6 py-1 block shadow-xl hover:text-white hover:bg-black"
-              onClick={updateCurrentViewHandler}
+              onClick={() => navigate("/posts")}
             >
               Cancel
             </button>
@@ -92,7 +93,7 @@ const EditPost = ({
               className="text-base font-semibold bg-gray-800 text-white 
       rounded-lg px-6 py-1 block shadow-xl hover:text-white hover:bg-black"
             >
-              Update Post
+              Publish Post
             </button>
           </div>
         </form>
@@ -101,4 +102,4 @@ const EditPost = ({
   );
 };
 
-export default EditPost;
+export default NewPost;

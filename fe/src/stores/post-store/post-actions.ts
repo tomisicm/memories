@@ -1,6 +1,13 @@
 import { Dispatch } from "react";
 
-import { SetPostAction, SetPostActionPayload, SET_POST } from "./post-types";
+import {
+  SetPostAction,
+  SetPostActionPayload,
+  SET_POST,
+  UpdatePostAction,
+  UpdatePostActionPayload,
+  UPDATE_POST,
+} from "./post-types";
 
 const setPostAction = (
   payload: SetPostActionPayload,
@@ -9,4 +16,19 @@ const setPostAction = (
   dispatch({ type: SET_POST, payload: payload });
 };
 
-export { setPostAction };
+const updatePostAction = (
+  payload: UpdatePostActionPayload,
+  dispatch: Dispatch<UpdatePostAction>
+): void => {
+  dispatch({ type: UPDATE_POST, payload: payload });
+};
+
+// TODO:
+// const deletePostAction = (
+//   payload: UpdatePostActionPayload,
+//   dispatch: Dispatch<UpdatePostAction>
+// ): void => {
+//   dispatch({ type: UPDATE_POST, payload: payload });
+// };
+
+export { setPostAction, updatePostAction };
