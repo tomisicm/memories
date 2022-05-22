@@ -5,12 +5,12 @@ import {
   Param,
   Post,
   Delete,
-  Patch,
   Query,
   UsePipes,
   ValidationPipe,
   UseGuards,
   ParseUUIDPipe,
+  Put,
 } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthGuard } from "@nestjs/passport";
@@ -61,7 +61,7 @@ export class PostController {
   }
 
   @ApiOperation({ summary: "Update post by id" })
-  @Patch("/:id")
+  @Put("/:id")
   async updatePost(
     @Param("id", ParseUUIDPipe) id: string,
     @Body(ValidationPipe) updatePostDto: CreatePostDto,
